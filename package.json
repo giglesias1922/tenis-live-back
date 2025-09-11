@@ -5,7 +5,6 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    
     "start": "json-server --watch db.json",
     "dev": "nodemon src/index.js"
   },
@@ -15,6 +14,10 @@
     "nodemon": "^3.1.10"
   },
   "dependencies": {
-    "json-server": "^1.0.0-beta.3"
+    "dotenv": "^17.2.1",
+    "env-var": "^7.5.0",
+    "express": "^5.1.0",
+    "json-server": "^1.0.0-beta.3",
+    "mongoose": "^8.18.0"
   }
 }

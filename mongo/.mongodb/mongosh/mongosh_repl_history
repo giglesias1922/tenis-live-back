@@ -1,0 +1,7 @@
+exit
+Get-ChildItem "$env:APPDATA" | Where-Object {$_.Name -like "*MongoDB*"}
+exit
+docker-compose down
+exit
+ls -la .env
+dir .env
