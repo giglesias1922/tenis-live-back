@@ -8,9 +8,9 @@ config();
 const app = express();
 
 const port =  process.env.PORT || 3000;
-const connString = process.env.CONNECTIONSTRING;
 
-console.log("connString",connString)
+console.log("MONGO_URL",process.env.MONGO_URL);
+console.log("MONGO_DB_NAME",process.env.MONGO_DB_NAME);
 
 // Middleware para parsear JSON
 app.use(express.json());
