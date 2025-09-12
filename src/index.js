@@ -11,6 +11,7 @@ const port =  process.env.PORT || 3000;
 
 const mongo_url = process.env.MONGO_PUBLIC_URL || process.env.MONGO_URL;
 
+console.log("process.env.MONGO_PUBLIC_URL",process.env.MONGO_PUBLIC_URL);
 console.log("mongo_url",mongo_url);
 console.log("MONGO_DB_NAME",process.env.MONGO_DB_NAME);
 
