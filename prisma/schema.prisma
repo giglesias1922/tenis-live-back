@@ -15,9 +15,97 @@ datasource db {
   schemas  = ["public"]
 }
 
-model concept {
-  id          Int     @id @default(autoincrement())
-  description String
+enum EventCode  {
+  UNFORCED_FH_ERROR
+  UNFORCED_BH_ERROR
+  FORCED_FH_ERROR
+  FORCED_BH_ERROR
+  FH_WINNER
+  BH_WINNER
+  FIRST_SERVE_IN
+  FIRST_SERVE_OUT
+  DOUBLE_FAULT
+  ACE  
+  BREAK_POINT_WON
+  BREAK_POINT_LOST
+}
 
+model EventType {
+  id          Int          @id @default(autoincrement())
+  code        EventCode    @unique
+  description String
+  createdAt DateTime  @default(now())
+
+  events      MatchEvent[]
+
+  @@schema("public")
+  @@map("event_types")
+}
+
+
+model Club {
+  id        Int       @id @default(autoincrement())
+  name      String
+  city      String?
+  createdAt DateTime  @default(now())
+
+  matches   Match[]
+
+  @@schema("public")
+
+  @@map("clubs")
+}
+
+model Match {
+  id          Int     @id @default(autoincrement())
+  clubId       Int
+  opponentName String
+  round        String?
+  startTime    DateTime  @default(now())
+  endTime      DateTime?
+  won          Boolean?
+  notes        String?
+
+  club         Club      @relation(fields: [clubId], references: [id])
+  sets         Set[]
+  events        MatchEvent[]
+
+  @@schema("public")
+
+  @@map("matches")
+}
+
+model Set {
+  id            Int   @id @default(autoincrement())
+  matchId       Int
+  setNumber     Int // 1, 2, 3
+  playerGames   Int?
+  opponentGames Int?
+
+  match         Match @relation(fields: [matchId], references: [id])
+  events        MatchEvent[]
+
+  @@schema("public")
+
+  @@map("sets")
+}
+
+model MatchEvent {
+  id          Int      @id @default(autoincrement())
+  matchId     Int
+  setId       Int
+  eventTypeId Int
+
+  createdAt   DateTime @default(now())
+
+  match       Match     @relation(fields: [matchId], references: [id])
+  set         Set       @relation(fields: [setId], references: [id])
+  eventType   EventType @relation(fields: [eventTypeId], references: [id])
+
+  @@index([matchId])
+  @@index([setId])
+  @@index([eventTypeId])
+
+  @@map("match_events")
   @@schema("public")
 }
