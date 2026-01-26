@@ -8,7 +8,7 @@ export const get = async (req:Request, res:Response)=>{
     }
     catch(error)
     {
-        res.status(500).json({message: "Error obteniendo los clubes"});
+        res.status(500).json({message: "Error obteniendo los clubes " + error  });
     }
 }
 
@@ -23,7 +23,7 @@ export const post = async (req:Request, res:Response)=>{
 
         res.status(200).json(newClub);
     } catch (error) {
-        res.status(500).json({message: "Error creando el club"});
+        res.status(500).json({message: "Error creando el club " + error  });
     }
 }
 
@@ -43,7 +43,7 @@ export const put = async (req:Request, res:Response)=>{
 
         res.status(200).json(newRecord);
     } catch (error) {
-        res.status(500).json({message: "Error actualizando el club"});
+        res.status(500).json({message: "Error actualizando el club " + error  });
     }
 }
 
@@ -65,7 +65,7 @@ export const del = async (req:Request, res:Response)=>
 
         res.status(200)
     } catch (error) {
-        res.status(500).json({message: "Error eliminando el club"});       
+        res.status(500).json({message: "Error eliminando el club " + error  });    
     }
 }
 
@@ -73,9 +73,9 @@ export const getOne = async (req: Request, res: Response) => {
     try {
       const {id} = req.body;
   
-      const match = await clubService.getClub(id));
+      const match = await clubService.getClub(id);
       res.status(200).json(match);
     } catch (error) {
-      res.status(500).json({ message: "Error obteniendo el club" });
+      res.status(500).json({ message: "Error obteniendo el club " + error  });
     }
   };
