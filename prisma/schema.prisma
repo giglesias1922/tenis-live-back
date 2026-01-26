@@ -28,6 +28,8 @@ enum EventCode  {
   ACE  
   BREAK_POINT_WON
   BREAK_POINT_LOST
+
+  @@schema("public")
 }
 
 model EventType {
@@ -35,7 +37,7 @@ model EventType {
   code        EventCode    @unique
   description String
   createdAt DateTime  @default(now())
-
+  active    Boolean @default(true)
   events      MatchEvent[]
 
   @@schema("public")

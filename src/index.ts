@@ -1,5 +1,9 @@
 import express from "express";
 import "dotenv/config";
+import routes from "./routes";
+
+
+console.log("🔥 index.ts principal cargado");
 
 const app = express();
 const PORT = process.env.PORT || "3000";
@@ -11,6 +15,9 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.json({ message: "API funcionando 🚀" });
 });
+
+// Rutas de la API
+app.use("/api", routes);
 
 // 👉 LISTENER
 app.listen(PORT, () => {
