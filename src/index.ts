@@ -11,6 +11,10 @@ const PORT = process.env.PORT || "3000";
 // Middleware para leer JSON
 app.use(express.json());
 
+app.get("/health", (req, res) => {
+  res.send("API OK");
+});
+
 // Ruta de prueba
 app.get("/", (req, res) => {
   res.json({ message: "API funcionando 🚀" });
