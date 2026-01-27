@@ -11,12 +11,12 @@ export interface EndSetInput{
     opponentGames:number
 }
 
-export async function startSet(data: StartSetInput)
+export async function StartSet(data: StartSetInput)
 {
     await prisma.set.create({data}); 
 }
 
-export async function endSet(id:number,data: EndSetInput)
+export async function EndSet(id:number,data: EndSetInput)
 {
     await prisma.set.update({
         where:{id},

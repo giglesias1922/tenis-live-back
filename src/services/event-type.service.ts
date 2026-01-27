@@ -11,7 +11,7 @@ interface UpdateEventTypeInput {
   description?: string;
 }
 
-export async function getEventTypes() {
+export async function GetAll() {
   const eventTypes = await prisma.eventType.findMany({
     orderBy: { id: 'asc' }
   })
@@ -19,19 +19,19 @@ export async function getEventTypes() {
   return eventTypes
 }
 
-export async function getEventType(id: number) {
+export async function GetById(id: number) {
   return prisma.eventType.findUnique({
     where: { id }
   });
 }
 
-export async function addEventType(data: CreateEventTypeInput) {
+export async function Add(data: CreateEventTypeInput) {
   return prisma.eventType.create({
     data
   });
 }
 
-export async function updateEventType(
+export async function Update(
   id: number,
   data: UpdateEventTypeInput
 ) {
@@ -41,13 +41,13 @@ export async function updateEventType(
   });
 }
 
-export async function deleteEventType(id: number) {
+export async function Delete(id: number) {
   return prisma.eventType.delete({
     where: { id }
   });
 }
 
-export async function deactivateEventType(id: number) {
+export async function Deactivate(id: number) {
   return prisma.eventType.update({
     where: { id },
     data: { active: false }

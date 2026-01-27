@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/", get);
 router.post("/", post);
-router.put("/", put);
-router.delete("/", del);
+router.put("/:id", put);
+router.delete("/:id", del);
 
 export default router;

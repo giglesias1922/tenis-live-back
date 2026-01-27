@@ -1,11 +1,11 @@
 import prisma from "../prisma/client";
 
-export async function getMatches ()
+export async function GetAll ()
 {
   return prisma.match.findMany();
 };
 
-export async function getMatch (id:number)
+export async function GetById (id:number)
 {
   return prisma.match.findUnique({
     where:{id}
@@ -25,14 +25,14 @@ export interface EndMatchObject
     notes:string
 }
 
-export async function startMatch(data: StartMatchObject)
+export async function StartMatch(data: StartMatchObject)
 {
     return prisma.match.create({
       data
     });
 }
 
-export async function endMatch(id:number,data: EndMatchObject)
+export async function EndMatch(id:number,data: EndMatchObject)
 {
     return prisma.match.update({
       where:{id},
@@ -40,7 +40,7 @@ export async function endMatch(id:number,data: EndMatchObject)
     });
 }
 
-export async function hasSets(matchId: number): Promise<boolean> {
+export async function HasSets(matchId: number): Promise<boolean> {
   const count = await prisma.set.count({
     where: { matchId }
   });

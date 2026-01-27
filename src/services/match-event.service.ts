@@ -1,11 +1,11 @@
 import prisma from "../prisma/client";
 
-export async function getMatchEvents()
+export async function GetAll()
 {
     return prisma.matchEvent.findMany();
 }
 
-export async function getByEventType(eventTypeId:number)
+export async function GetByEventType(eventTypeId:number)
 {
     return prisma.matchEvent.findFirst({where: { eventTypeId }})
 }

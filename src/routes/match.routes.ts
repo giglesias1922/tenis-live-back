@@ -4,9 +4,9 @@ import * as matchController from "../controllers/match.controller";
 const router = Router();
 
 router.get("/", matchController.get);
-router.get("/{id}", matchController.getOne);
+router.get("/:id", matchController.getOne);
 router.post("/", matchController.startMatch);
-router.put("/", matchController.endMatch);
+router.put("/:id", matchController.endMatch);
 
 
 export default router;

@@ -10,36 +10,36 @@ interface UpdateClubInput {
     city: string;
 }
 
-export async function getClubs() {
+export async function GetAll() {
     return await prisma.club.findMany();
 }
 
-export async function getClub(id:number) {
+export async function GetById(id:number) {
     return await prisma.club.findUnique({
         where: {id}
     });
 }
 
-export async function addClub(data:CreateClubInput) {
+export async function Add(data:CreateClubInput) {
     return prisma.club.create({
         data
     });
 }
 
-export async function updateClub(id: number, data:UpdateClubInput) {
+export async function Update(id: number, data:UpdateClubInput) {
     return prisma.club.update({
         where: {id},
         data
     });
 }
 
-export async function deleteClub(id: number) {
+export async function Delete(id: number) {
     return prisma.club.delete({
         where: {id}
     });
 }
 
-export async function hasMatches(clubId: number): Promise<boolean> {
+export async function HasMatches(clubId: number): Promise<boolean> {
     const count = await prisma.match.count({
       where: { clubId }
     });

@@ -15,7 +15,7 @@ export const startSet = async (req:Request,res:Response)=>
             matchId,setNumber
           }
 
-        const newSet = await setService.startSet(data);
+        const newSet = await setService.StartSet(data);
 
         res.status(200).json(newSet);
     } catch (error) {
@@ -26,7 +26,8 @@ export const startSet = async (req:Request,res:Response)=>
 export const endSet = async (req:Request,res:Response)=>
 {
     try {
-        const {id,playerGames,opponentGames} = req.body;
+        const {id} = req.params;
+        const {playerGames,opponentGames} = req.body;
 
         if(!id || !playerGames || !opponentGames)
         {
@@ -37,7 +38,7 @@ export const endSet = async (req:Request,res:Response)=>
             playerGames,opponentGames
             }
 
-        const newSet = await setService.endSet(id,data);
+        const newSet = await setService.EndSet(Number(id),data);
 
         res.status(200).json(newSet);
     } catch (error) {

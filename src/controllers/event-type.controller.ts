@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
 import * as eventTypeService from "../services/event-type.service";
-import {getByEventType}  from "../services/match-event.service";
+import {GetByEventType}  from "../services/match-event.service";
 import { EventCode } from "../generated/prisma";
 
 
 export const get = async (req: Request, res: Response) => {
   try {
-    const eventTypes = await eventTypeService.getEventTypes();
+    const eventTypes = await eventTypeService.GetAll();
     res.status(200).json(eventTypes);
   } catch (error) {
-    res.status(500).json({ message: "Error obteniendo los tipos de evento" });
+    res.status(500).json({ message: "Error obteniendo los tipos de evento " + error  });
   }
 };
 
@@ -30,7 +30,7 @@ export const post = async (req: Request, res: Response) => {
       });
     }
 
-    const eventType = await eventTypeService.addEventType({
+    const eventType = await eventTypeService.Add({
       code: code as EventCode,
       description
     });
@@ -45,14 +45,8 @@ export const put = async (req:Request, res: Response ) =>
 {
   try{
 
-    const {id, description} = req.body;
-
-    const oldEventType = await eventTypeService.getEventType(id);
-
-    if(!oldEventType)
-    {
-      return res.status(404).json({message:"No se encontró el tipo de evento con id:" + id});
-    } 
+    const {id} = req.params;
+    const {description} = req.body;
 
     if(!id || !description)
     {
@@ -60,8 +54,16 @@ export const put = async (req:Request, res: Response ) =>
         message: "id y description son obligatorios"
       });
     }
+ 
+    const oldEventType = await eventTypeService.GetById(Number(id));
 
-    const eventType = await eventTypeService.updateEventType(id,{description: description});
+    if(!oldEventType)
+    {
+      return res.status(404).json({message:"No se encontró el tipo de evento con id:" + id});
+    } 
+
+    
+    const eventType = await eventTypeService.Update(Number(id),{description: description});
 
     res.status(200).json(eventType);
   }
@@ -74,9 +76,9 @@ export const put = async (req:Request, res: Response ) =>
 export const del = async(req:Request, res:Response) =>
 {
   try{
-    const {id} = req.body;
+    const {id} = req.params;
 
-    const eventType = await eventTypeService.getEventType(id);
+    const eventType = await eventTypeService.GetById(Number(id));
 
     if(!eventType)
     {
@@ -85,14 +87,14 @@ export const del = async(req:Request, res:Response) =>
 
 
     //Buscar en match event si existe para ese id, deshabilitar y sino eliinar
-    const matches = await getByEventType(id);
+    const matches = await GetByEventType(Number(id));
 
     if(!matches)
-      await eventTypeService.deleteEventType(id);
+      await eventTypeService.Delete(Number(id));
     else
-      await eventTypeService.deactivateEventType(id);
+      await eventTypeService.Deactivate(Number(id));
 
-    return res.status(200);
+    res.sendStatus(200);
   }
   catch(error)
   {
