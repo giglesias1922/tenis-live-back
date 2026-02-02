@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import * as eventTypeService from "../services/event-type.service";
 import {GetByEventType}  from "../services/match-event.service";
-import { EventCode } from "../generated/prisma";
+import { EventCode } from "@prisma/client";
 
 
 export const get = async (req: Request, res: Response) => {

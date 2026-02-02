@@ -1,6 +1,5 @@
 import prisma from "../prisma/client";
-import { EventCode } from "../generated/prisma";
-
+import { EventCode } from "@prisma/client";
 
 interface CreateEventTypeInput {
   code: EventCode;
