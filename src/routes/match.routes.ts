@@ -5,6 +5,7 @@ const router = Router();
 
 router.get("/", matchController.get);
 router.get("/:id", matchController.getOne);
+router.get("/active", matchController.getActive);
 router.post("/", matchController.startMatch);
 router.put("/:id", matchController.endMatch);
 

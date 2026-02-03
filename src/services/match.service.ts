@@ -1,4 +1,6 @@
-import prisma from "../prisma/client";
+import { Match } from "@prisma/client";
+import  prisma  from "../prisma/client";
+
 
 export async function GetAll ()
 {
@@ -46,4 +48,13 @@ export async function HasSets(matchId: number): Promise<boolean> {
   });
 
   return count > 0;
+}
+
+export async function GetActiveMatch(): Promise<Match>
+{
+  return await prisma.match.findFirstOrThrow(
+    {
+      where: {endTime: null}
+    }
+  )
 }

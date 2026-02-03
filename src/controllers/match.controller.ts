@@ -59,3 +59,15 @@ export const endMatch = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error obteniendo el match " + error  });
   }
 };
+
+
+export const getActive = async (req: Request, res: Response) => {
+  try {
+    const match = await matchService.GetActiveMatch();
+
+    res.status(200).json(match);
+  } catch (error) {
+    res.status(500).json({ message: "Error obteniendo el match activo" + error  });
+  }
+};
+
