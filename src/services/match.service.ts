@@ -50,9 +50,9 @@ export async function HasSets(matchId: number): Promise<boolean> {
   return count > 0;
 }
 
-export async function GetActiveMatch(): Promise<Match>
+export async function GetActiveMatch(): Promise<Match | null>
 {
-  return await prisma.match.findFirstOrThrow(
+  return await prisma.match.findFirst(
     {
       where: {endTime: null}
     }
