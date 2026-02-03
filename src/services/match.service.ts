@@ -52,6 +52,7 @@ export async function HasSets(matchId: number): Promise<boolean> {
 
 export async function GetActiveMatch(): Promise<Match | null>
 {
+  
   return await prisma.match.findFirst(
     {
       where: {endTime: null}
