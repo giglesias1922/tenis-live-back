@@ -8,6 +8,10 @@ console.log("🔥 index.ts principal cargado");
 const app = express();
 const PORT = process.env.PORT || "3000";
 
+console.log("DATABASE_URL:", process.env.DATABASE_URL);
+console.log("PORT:", process.env.PORT);
+
+
 // Middleware para leer JSON
 app.use(express.json());
 
