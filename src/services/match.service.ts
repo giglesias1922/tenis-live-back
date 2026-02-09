@@ -18,7 +18,8 @@ export interface StartMatchObject
 {
     clubId:number,
     opponentName:string,
-    round:string
+    round:string,
+    notes:string
 }
 
 export interface EndMatchObject
