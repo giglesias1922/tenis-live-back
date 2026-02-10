@@ -29,14 +29,14 @@ export const startMatch = async (req: Request, res: Response) => {
       clubId,opponentName,round, notes
     }
 
-    if(!clubId || !opponentName || round)
+    if(!clubId || !opponentName || !round)
       return res.status(400).json({message: "clubId, opponentName y round son obligatorios"});
 
     const match = await matchService.StartMatch(data);
 
     res.status(200).json(match);
   } catch (error) {
-    res.status(500).json({ message: "Error obteniendo el match " + error  });
+    res.status(500).json({ message: "Error creando el match " + error  });
   }
 };
 
@@ -49,14 +49,14 @@ export const endMatch = async (req: Request, res: Response) => {
       won,notes
     }
 
-    if(!id || !won)
+    if(!id || won===undefined)
       return res.status(400).json({message: "id y won son obligatorios"});
 
     const match = await matchService.EndMatch(Number(id),data);
 
     res.status(200).json(match);
   } catch (error) {
-    res.status(500).json({ message: "Error obteniendo el match " + error  });
+    res.status(500).json({ message: "Error finalizando el match " + error  });
   }
 };
 
