@@ -34,6 +34,8 @@ enum EventCode  {
 enum SetStatus {
   ACTIVE
   CLOSED
+
+  @@schema("public")
 }
 
 model EventType {
