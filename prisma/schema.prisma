@@ -31,6 +31,11 @@ enum EventCode  {
   @@schema("public")
 }
 
+enum SetStatus {
+  ACTIVE
+  CLOSED
+}
+
 model EventType {
   id          Int          @id @default(autoincrement())
   code        EventCode    @unique
@@ -82,6 +87,7 @@ model Set {
   setNumber     Int // 1, 2, 3
   playerGames   Int?
   opponentGames Int?
+  status        SetStatus @default(ACTIVE)
 
   match         Match @relation(fields: [matchId], references: [id])
   events        MatchEvent[]

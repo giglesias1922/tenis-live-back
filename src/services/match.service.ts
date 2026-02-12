@@ -1,6 +1,6 @@
 import { Match } from "@prisma/client";
 import  prisma  from "../prisma/client";
-
+import * as setService from "../services/set.service"
 
 export async function GetAll ()
 {
@@ -28,12 +28,25 @@ export interface EndMatchObject
     notes:string
 }
 
-export async function StartMatch(data: StartMatchObject)
-{
-    return prisma.match.create({
+export async function StartMatch(data: StartMatchObject) {
+
+  return prisma.$transaction(async (tx) => {
+
+    const match = await tx.match.create({
       data
     });
-}
+
+    await setService.StartSet(
+      {
+        matchId: match.id,
+        setNumber: 1
+      },
+      tx
+    );
+
+    return match;
+  });
+} 
 
 export async function EndMatch(id:number,data: EndMatchObject)
 {

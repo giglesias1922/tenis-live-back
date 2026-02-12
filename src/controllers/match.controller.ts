@@ -32,6 +32,11 @@ export const startMatch = async (req: Request, res: Response) => {
     if(!clubId || !opponentName || !round)
       return res.status(400).json({message: "clubId, opponentName y round son obligatorios"});
 
+    const matchActive = await matchService.GetActiveMatch();
+
+    if(matchActive)
+      return res.status(400).json({message: "Ya hay un match activo."});    
+
     const match = await matchService.StartMatch(data);
 
     res.status(200).json(match);
