@@ -19,7 +19,8 @@ export interface StartMatchObject
     clubId:number,
     opponentName:string,
     round:string,
-    notes:string
+    notes:string,
+    supertiebreak:boolean
 }
 
 export interface EndMatchObject

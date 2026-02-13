@@ -73,6 +73,7 @@ model Match {
   endTime      DateTime?
   won          Boolean?
   notes        String?
+  supertiebreak          Boolean @default(false)
 
   club         Club      @relation(fields: [clubId], references: [id])
   sets         Set[]

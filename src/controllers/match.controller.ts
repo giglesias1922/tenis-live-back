@@ -23,10 +23,10 @@ export const getOne = async (req: Request, res: Response) => {
 
 export const startMatch = async (req: Request, res: Response) => {
   try {
-    const {clubId,opponentName,round,notes} = req.body;
+    const {clubId,opponentName,round,notes,supertiebreak} = req.body;
 
     const data: matchService.StartMatchObject= {
-      clubId,opponentName,round, notes
+      clubId,opponentName,round, notes,supertiebreak
     }
 
     if(!clubId || !opponentName || !round)
