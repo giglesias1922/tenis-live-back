@@ -1,6 +1,5 @@
 import  prisma  from "../prisma/client";
-import { Prisma,PrismaClient } from "@prisma/client";
-
+import { Prisma,PrismaClient, SetStatus } from "@prisma/client";
 
 export interface StartSetInput{
     matchId:number,
@@ -27,6 +26,9 @@ export async function EndSet(
   ) {
     return db.set.update({
       where: { id },
-      data
+      data: {
+        ...data,
+        status: SetStatus.CLOSED
+      }
     });
   }
