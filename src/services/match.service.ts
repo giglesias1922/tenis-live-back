@@ -14,7 +14,7 @@ export async function GetById (id:number)
   });
 };
 
-export interface StartMatchObject
+export type StartMatchObject =
 {
     clubId:number,
     opponentName:string,
@@ -23,10 +23,21 @@ export interface StartMatchObject
     supertiebreak:boolean
 }
 
-export interface EndMatchObject
+export type EndMatchObject =
 {
     won:boolean,
     notes:string
+}
+
+export type ActiveMatchDto =
+{
+    id:number,
+    clubId:number,    
+    opponentName: string,
+    round:string,
+    startTime:Date,
+    supertiebreak:boolean,
+    clubName:string
 }
 
 export async function StartMatch(data: StartMatchObject) {
@@ -65,12 +76,36 @@ export async function HasSets(matchId: number): Promise<boolean> {
   return count > 0;
 }
 
-export async function GetActiveMatch(): Promise<Match | null>
+export async function GetActiveMatch(): Promise<ActiveMatchDto | null>
 {
   
-  return await prisma.match.findFirst(
+  const data = await prisma.match.findFirst(
     {
-      where: {endTime: null}
+      where: {endTime: null},
+      include:
+      {
+          club:
+          {
+            select:
+            {
+              name:true
+            }
+          }
+      }
     }
   )
+
+  if (!data) return null;
+
+  const resu:ActiveMatchDto = {
+      id:data.id,
+      clubId:data.clubId,
+      opponentName:data.opponentName,
+      round:data.round??"",
+      startTime:data.startTime,
+      supertiebreak:data.supertiebreak,
+      clubName:data.club.name
+  }
+
+  return resu;
 }
