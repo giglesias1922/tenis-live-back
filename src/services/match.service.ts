@@ -1,4 +1,4 @@
-import { Match } from "@prisma/client";
+import { Match, SetStatus } from "@prisma/client";
 import  prisma  from "../prisma/client";
 import * as setService from "../services/set.service"
 
@@ -37,7 +37,9 @@ export type ActiveMatchDto =
     round:string,
     startTime:Date,
     supertiebreak:boolean,
-    clubName:string
+    clubName:string,
+    currentSetId?: number,
+    currentSetNumber?: number
 }
 
 export async function StartMatch(data: StartMatchObject) {
@@ -90,6 +92,17 @@ export async function GetActiveMatch(): Promise<ActiveMatchDto | null>
             {
               name:true
             }
+          },
+          sets:
+          {
+            where:{
+              status: SetStatus.ACTIVE
+            },
+            select:
+            {
+              id: true,
+              setNumber: true
+            }
           }
       }
     }
@@ -104,7 +117,9 @@ export async function GetActiveMatch(): Promise<ActiveMatchDto | null>
       round:data.round??"",
       startTime:data.startTime,
       supertiebreak:data.supertiebreak,
-      clubName:data.club.name
+      clubName:data.club.name,
+      currentSetId:data.sets[0].id??null,
+      currentSetNumber:data.sets[0].setNumber??null
   }
 
   return resu;
