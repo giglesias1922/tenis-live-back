@@ -38,13 +38,26 @@ enum SetStatus {
   @@schema("public")
 }
 
+enum EventGroup {
+  SERVICE
+  ERROR
+  WINNER
+  BREAKPOINT
+
+  @@schema("public")
+}
+
 model EventType {
-  id          Int          @id @default(autoincrement())
+  id  Int @id @default(autoincrement())
   code        EventCode    @unique
   description String
   createdAt DateTime  @default(now())
   active    Boolean @default(true)
   events      MatchEvent[]
+  buttonText  String?
+  buttonOrder Int?
+  buttonColour  String?
+  buttonGroup EventGroup?
 
   @@schema("public")
   @@map("event_types")
@@ -91,7 +104,7 @@ model Set {
   playerGames   Int?
   opponentGames Int?
   status        SetStatus @default(ACTIVE)
-
+  won           Boolean?
   match         Match @relation(fields: [matchId], references: [id])
   events        MatchEvent[]
 

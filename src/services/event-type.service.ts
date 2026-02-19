@@ -1,13 +1,21 @@
 import  prisma  from "../prisma/client";
-import { EventCode } from "@prisma/client";
+import { EventCode, EventGroup } from "@prisma/client";
 
 interface CreateEventTypeInput {
   code: EventCode;
   description: string;
+  buttonColour?:string;
+  buttonGroup?:EventGroup;
+  buttonOrder?:number;
+  buttonText?:string;
 }
 
 interface UpdateEventTypeInput {
   description?: string;
+  buttonColour?:string;
+  buttonGroup?:EventGroup;
+  buttonOrder?:number;
+  buttonText?:string;
 }
 
 export async function GetAll() {

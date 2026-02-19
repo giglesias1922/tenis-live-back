@@ -1,5 +1,5 @@
-import { Match, SetStatus } from "@prisma/client";
 import  prisma  from "../prisma/client";
+import { Prisma,PrismaClient, SetStatus } from "@prisma/client";
 import * as setService from "../services/set.service"
 
 export async function GetAll ()
@@ -62,12 +62,18 @@ export async function StartMatch(data: StartMatchObject) {
   });
 } 
 
-export async function EndMatch(id:number,data: EndMatchObject)
-{
-    return prisma.match.update({
-      where:{id},
-      data
-    });
+export async function EndMatch(
+  id: number,
+  data: EndMatchObject,
+  db: Prisma.TransactionClient | PrismaClient = prisma
+) {
+  return db.match.update({
+    where: { id },
+    data: {
+      ...data,
+      endTime: new Date() 
+    }
+  });
 }
 
 export async function HasSets(matchId: number): Promise<boolean> {
