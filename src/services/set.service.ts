@@ -176,41 +176,92 @@ import { EndMatch, EndMatchObject} from "./match.service";
     );
   }
   
-  async function validateSetScore(
+  function validateSetScore(
     player: number,
     opponent: number,
     isSuperTiebreak: boolean
   ) {
+    // ---- VALIDACIONES BÁSICAS ----
+    if (!Number.isInteger(player) || !Number.isInteger(opponent)) {
+      throw new Error("Los juegos deben ser números enteros");
+    }
+  
     if (player < 0 || opponent < 0) {
       throw new Error("Score inválido");
+    }
+  
+    if (player === opponent) {
+      throw new Error("Un set no puede terminar empatado");
     }
   
     const max = Math.max(player, opponent);
     const min = Math.min(player, opponent);
     const diff = max - min;
   
+    // ============================================================
+    // 🔥 SUPER TIEBREAK (a 10 con diferencia de 2)
+    // ============================================================
     if (isSuperTiebreak) {
-      if (max < 10 || diff < 2) {
-        throw new Error("Super tiebreak inválido");
+      if (max < 10) {
+        throw new Error("Super tiebreak inválido: mínimo 10 puntos");
       }
+  
+      if (diff < 2) {
+        throw new Error("Super tiebreak inválido: diferencia mínima de 2");
+      }
+  
+      // 🔒 Evitar resultados inflados
+      if (min < 9) {
+        // si el rival tiene menos de 9, debe terminar exactamente en 10
+        if (max !== 10) {
+          throw new Error("Super tiebreak inválido: debía terminar en 10");
+        }
+      } else {
+        // si están 9-9 o más, debe ganar por 2 exactos
+        if (max !== min + 2) {
+          throw new Error(
+            "Super tiebreak inválido: debe ganar por 2 exactos"
+          );
+        }
+      }
+  
       return;
     }
   
-    // Set normal
+    // ============================================================
+    // 🎾 SET NORMAL
+    // ============================================================
+  
     if (max < 6) {
       throw new Error("Set inválido: mínimo 6 juegos");
     }
   
-    if (max === 6 && diff < 2 && max + min < 12) {
-      throw new Error("Diferencia insuficiente");
+    if (diff < 2 && max !== 7) {
+      throw new Error("Set inválido: diferencia mínima de 2");
     }
   
+    // 6-x
+    if (max === 6) {
+      if (min > 4) {
+        // 6-5 no es válido
+        throw new Error("Resultado inválido");
+      }
+      return;
+    }
+  
+    // 7-x
+    if (max === 7) {
+      if (!(min === 5 || min === 6)) {
+        throw new Error(
+          "Resultado inválido (7 solo válido contra 5 o 6)"
+        );
+      }
+      return;
+    }
+  
+    // Evitar 8-6, 9-7, etc.
     if (max > 7) {
       throw new Error("Set inválido");
-    }
-  
-    if (max === 7 && !(min === 5 || min === 6)) {
-      throw new Error("Resultado inválido (7 solo válido vs 5 o 6)");
     }
   }
   

@@ -35,13 +35,22 @@ export const endSet = async (req:Request,res:Response)=>
         }
 
         const data: setService.EndSetInput= {
-            playerGames,opponentGames
+            playerGames: Number(playerGames),
+            opponentGames: Number(opponentGames),
             }
 
         const newSet = await setService.EndSet(Number(id),data);
 
         res.status(200).json(newSet);
     } catch (error) {
-        res.status(500).json({message:"Error al actualizar el set " + error  });
+        if (error instanceof Error) {
+            return res.status(400).json({
+              message: error.message
+            });
+          }
+        
+          return res.status(500).json({
+            message: "Error interno del servidor"
+          });
     }
 }
