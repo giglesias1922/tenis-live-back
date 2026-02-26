@@ -17,7 +17,50 @@ export interface CreateMatchEventInput
     eventTypeId:number
 }
 
+export interface MatchSummary
+{
+    buttonGroup:string,
+    event:string,
+    count:number
+}
+
 export async function CreateMatchEvent(data: CreateMatchEventInput)
 {
     return prisma.matchEvent.create({data});
+}
+
+export async function GetSummary(matchId: number): Promise<MatchSummary[]> {
+
+  const grouped = await prisma.matchEvent.groupBy({
+    by: ["eventTypeId"],
+    where: {
+      matchId,
+    },
+    _count: {
+      eventTypeId: true,
+    },
+  });
+
+  const eventTypeIds = grouped.map(g => g.eventTypeId);
+  
+  const eventTypes = await prisma.eventType.findMany({
+    where: {
+      id: { in: eventTypeIds },
+    },
+    select: {
+      id: true,
+      description: true,
+      buttonGroup: true,
+    },
+  });
+
+  return grouped.map(g => {
+    const eventType = eventTypes.find(e => e.id === g.eventTypeId);
+
+    return {
+      event: eventType?.description ?? "",
+      buttonGroup: eventType?.buttonGroup ?? "",
+      count: g._count.eventTypeId,
+    };
+  });
 }

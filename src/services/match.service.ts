@@ -1,5 +1,5 @@
 import  prisma  from "../prisma/client";
-import { Prisma,PrismaClient, SetStatus } from "@prisma/client";
+import { Prisma,PrismaClient, SetStatus, MatchStatus, Set } from "@prisma/client";
 import * as setService from "../services/set.service"
 
 export async function GetAll ()
@@ -14,7 +14,7 @@ export async function GetById (id:number)
   });
 };
 
-export type StartMatchObject =
+export interface StartMatchObject
 {
     clubId:number,
     opponentName:string,
@@ -23,13 +23,13 @@ export type StartMatchObject =
     supertiebreak:boolean
 }
 
-export type EndMatchObject =
+export interface EndMatchObject
 {
     won:boolean,
     notes:string
 }
 
-export type ActiveMatchDto =
+export interface ActiveMatchDto
 {
     id:number,
     clubId:number,    
@@ -40,6 +40,21 @@ export type ActiveMatchDto =
     clubName:string,
     currentSetId?: number,
     currentSetNumber?: number
+}
+
+
+
+export interface ClosedMatchDto
+{
+    matchId:number,
+    clubName:string,
+    opponentName: string,
+    round:string|null,
+    startTime:Date,
+    endTime:Date|null,
+    won:Boolean|null,
+    sets: Set[]
+
 }
 
 export async function StartMatch(data: StartMatchObject) {
@@ -71,7 +86,9 @@ export async function EndMatch(
     where: { id },
     data: {
       ...data,
-      endTime: new Date() 
+      endTime: new Date(),
+      status: MatchStatus.CLOSED,
+        
     }
   });
 }
@@ -83,6 +100,42 @@ export async function HasSets(matchId: number): Promise<boolean> {
 
   return count > 0;
 }
+
+
+
+export async function GetClosedMatches():Promise<ClosedMatchDto[]>
+{
+  const matches = await prisma.match.findMany(
+    {
+      where: {
+        status:{
+          not: MatchStatus.ACTIVE
+        }
+      },
+      orderBy:{endTime: "desc"},
+      include:
+      {
+        club: true,
+        sets:true
+      }
+    },
+    
+  )
+
+  return matches.map((m)=>(
+    {
+      matchId: m.id,
+      clubName: m.club.name,
+      opponentName: m.opponentName,
+      round: m.round,
+      startTime: m.startTime,
+      endTime: m.endTime,
+      won: m.won,
+      sets: m.sets
+    }
+  ))
+}
+
 
 export async function GetActiveMatch(): Promise<ActiveMatchDto | null>
 {

@@ -47,6 +47,14 @@ enum EventGroup {
   @@schema("public")
 }
 
+enum MatchStatus {
+  ACTIVE
+  CLOSED
+  SUSPENDED
+
+  @@schema("public")
+}
+
 model EventType {
   id  Int @id @default(autoincrement())
   code        EventCode    @unique
@@ -87,6 +95,7 @@ model Match {
   won          Boolean?
   notes        String?
   supertiebreak          Boolean @default(false)
+  status      MatchStatus?  @default(ACTIVE)
 
   club         Club      @relation(fields: [clubId], references: [id])
   sets         Set[]

@@ -1,6 +1,6 @@
 import  prisma  from "../prisma/client";
-import { Prisma,PrismaClient, SetStatus, Set } from "@prisma/client";
-import { EndMatch, EndMatchObject} from "./match.service";
+import { Prisma,PrismaClient, SetStatus, Set, MatchStatus } from "@prisma/client";
+import { EndMatch} from "./match.service";
 
   export interface StartSetInput{
       matchId:number,

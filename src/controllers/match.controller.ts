@@ -68,14 +68,21 @@ export const endMatch = async (req: Request, res: Response) => {
 
 export const getActive = async (req: Request, res: Response) => {
   try {
-    console.log("Entroi");
-
     const match = await matchService.GetActiveMatch();
 
     res.status(200).json(match);
   } catch (error) {
-    console.log(error)
     res.status(500).json({ message: "Error obteniendo el match activo" + error  });
+  }
+};
+
+export const getClosed = async (req: Request, res: Response) => {
+  try {
+    const matches = await matchService.GetClosedMatches();
+
+    res.status(200).json(matches);
+  } catch (error) {
+    res.status(500).json({ message: "Error obteniendo los match cerrados" + error  });
   }
 };
 
