@@ -139,7 +139,6 @@ export async function GetClosedMatches():Promise<ClosedMatchDto[]>
 
 export async function GetActiveMatch(): Promise<ActiveMatchDto | null>
 {
-  
   const data = await prisma.match.findFirst(
     {
       where: {endTime: null},

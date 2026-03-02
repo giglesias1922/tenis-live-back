@@ -1,4 +1,5 @@
 import  prisma  from "../prisma/client";
+import * as matchService from "../services/match.service"
 
 export async function GetAll()
 {
@@ -56,6 +57,7 @@ export async function GetSummary(matchId: number): Promise<MatchSummary[]> {
 
   return grouped.map(g => {
     const eventType = eventTypes.find(e => e.id === g.eventTypeId);
+    const match = matchService.GetById(matchId)
 
     return {
       event: eventType?.description ?? "",
