@@ -59,10 +59,11 @@ export async function GetSummary(matchId: number): Promise<MatchSummary[]> {
     const eventType = eventTypes.find(e => e.id === g.eventTypeId);
     const match = matchService.GetById(matchId)
 
+
     return {
       event: eventType?.description ?? "",
       buttonGroup: eventType?.buttonGroup ?? "",
-      count: g._count.eventTypeId,
+      count: g._count.eventTypeId
     };
   });
 }
