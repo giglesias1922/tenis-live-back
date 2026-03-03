@@ -6,7 +6,15 @@ import { Request, Response, NextFunction } from "express";
 const app = express();
 const PORT = process.env.PORT || "3000";
 
+const cors = require("cors")
 
+app.use(cors({
+  origin: [
+    "http://localhost:19006",
+    "http://localhost:3000",
+    "https://tenis-live.vercel.app"
+  ]
+}))
 // app.use((req, res, next) => {
 //   console.log("REQUEST DESDE:", req.headers.host);
 //   next();
