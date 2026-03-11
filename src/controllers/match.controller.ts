@@ -78,13 +78,14 @@ export const getActive = async (req: Request, res: Response) => {
 
 export const getClosed = async (req: Request, res: Response) => {
   try {
-    
-    const {clubId, fromDate, opponent} = req.params;
+    const {clubId,fromDate,opponent} = req.query;
 
 
     const matches = await matchService.GetClosedMatches(
       {
-        clubId: Number(clubId), fromDate: new Date(fromDate), opponent,
+        clubId: clubId ? Number(clubId) : undefined, 
+        fromDate: fromDate ? new Date(fromDate.toString()) : undefined, 
+        opponent: opponent ? String(opponent) : undefined,
       }
     );
 

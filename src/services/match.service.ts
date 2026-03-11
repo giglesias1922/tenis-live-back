@@ -110,6 +110,14 @@ export async function HasSets(matchId: number): Promise<boolean> {
 
 export async function GetClosedMatches(filter:ClosedMatchFilter):Promise<ClosedMatchDto[]>
 {
+  let from: Date | undefined;
+
+  //Si vino fecha desde, le saca la hora
+  if (filter?.fromDate) {
+    from = new Date(filter.fromDate);
+  }
+
+
   const matches = await prisma.match.findMany(
     {
       where: {
@@ -123,7 +131,7 @@ export async function GetClosedMatches(filter:ClosedMatchFilter):Promise<ClosedM
   
         ...(filter?.fromDate && {
           startTime: {
-            gte: filter.fromDate
+            gte: from
           }
         }),
   
