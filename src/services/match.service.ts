@@ -54,7 +54,12 @@ export interface ClosedMatchDto
     endTime:Date|null,
     won:Boolean|null,
     sets: Set[]
+}
 
+export type ClosedMatchFilter = {
+  clubId?: number
+  fromDate?: Date
+  opponent?: string
 }
 
 export async function StartMatch(data: StartMatchObject) {
@@ -103,14 +108,31 @@ export async function HasSets(matchId: number): Promise<boolean> {
 
 
 
-export async function GetClosedMatches():Promise<ClosedMatchDto[]>
+export async function GetClosedMatches(filter:ClosedMatchFilter):Promise<ClosedMatchDto[]>
 {
   const matches = await prisma.match.findMany(
     {
       where: {
         status:{
           not: MatchStatus.ACTIVE
-        }
+        },
+
+        ...(filter?.clubId && {
+          clubId: filter.clubId
+        }),
+  
+        ...(filter?.fromDate && {
+          startTime: {
+            gte: filter.fromDate
+          }
+        }),
+  
+        ...(filter?.opponent && {
+          opponentName: {
+            contains: filter.opponent,
+            mode: "insensitive"
+          }
+        })
       },
       orderBy:{endTime: "desc"},
       include:
