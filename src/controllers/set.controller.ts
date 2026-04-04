@@ -29,7 +29,7 @@ export const endSet = async (req:Request,res:Response)=>
         const {id} = req.params;
         const {playerGames,opponentGames} = req.body;
 
-        if(!id || !playerGames || !opponentGames)
+        if(!id || (playerGames==null) || (opponentGames==null))
         {
             return res.status(404).json({message:"id, playerGames y opponentGames son obligatorios"})   
         }
