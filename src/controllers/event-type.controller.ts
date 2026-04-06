@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import * as eventTypeService from "../services/event-type.service";
 import {GetByEventType}  from "../services/match-event.service";
-import { EventCode } from "@prisma/client";
 
 
 export const get = async (req: Request, res: Response) => {
@@ -22,16 +21,8 @@ export const post = async (req: Request, res: Response) => {
         message: "code y description son obligatorios"
       });
     }
-
-    // Validar enum
-    if (!Object.values(EventCode).includes(code)) {
-      return res.status(400).json({
-        message: "EventCode inválido"
-      });
-    }
-
     const eventType = await eventTypeService.Add({
-      code: code as EventCode,
+      code: code,
       description
     });
 

@@ -1,11 +1,10 @@
 import  prisma  from "../prisma/client";
-import { EventCode, EventGroup } from "@prisma/client";
 
 interface CreateEventTypeInput {
-  code: EventCode;
+  code: string;
   description: string;
   buttonColour?:string;
-  buttonGroup?:EventGroup;
+  eventGroupId?:number;
   buttonOrder?:number;
   buttonText?:string;
 }
@@ -13,7 +12,7 @@ interface CreateEventTypeInput {
 interface UpdateEventTypeInput {
   description?: string;
   buttonColour?:string;
-  buttonGroup?:EventGroup;
+  eventGroupId?:number;
   buttonOrder?:number;
   buttonText?:string;
 }

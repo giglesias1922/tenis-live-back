@@ -20,7 +20,7 @@ export interface CreateMatchEventInput
 
 export interface MatchSummary
 {
-    buttonGroup:string,
+    eventGroupId:number | null,
     event:string,
     count:number
 }
@@ -51,7 +51,7 @@ export async function GetSummary(matchId: number): Promise<MatchSummary[]> {
     select: {
       id: true,
       description: true,
-      buttonGroup: true,
+      eventGroupId: true,
     },
   });
 
@@ -62,7 +62,7 @@ export async function GetSummary(matchId: number): Promise<MatchSummary[]> {
 
     return {
       event: eventType?.description ?? "",
-      buttonGroup: eventType?.buttonGroup ?? "",
+      eventGroupId: eventType?.eventGroupId ?? null,
       count: g._count.eventTypeId
     };
   });

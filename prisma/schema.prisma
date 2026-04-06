@@ -14,26 +14,7 @@ datasource db {
   schemas  = ["public"]
 }
 
-enum EventCode  {
-  UNFORCED_FH_ERROR
-  UNFORCED_BH_ERROR
-  FORCED_FH_ERROR
-  FORCED_BH_ERROR
-  FH_WINNER
-  BH_WINNER
-  FIRST_SERVE_IN
-  FIRST_SERVE_OUT
-  DOUBLE_FAULT
-  ACE  
-  BREAK_POINT_FOR_WON
-  BREAK_POINT_FOR_LOST
-  BREAK_POINT_AGAINST_WON
-  BREAK_POINT_AGAINST_LOST 
-  NET_WON
-  NET_LOST
 
-  @@schema("public")
-}
 
 enum SetStatus {
   ACTIVE
@@ -42,14 +23,7 @@ enum SetStatus {
   @@schema("public")
 }
 
-enum EventGroup {
-  SERVICE
-  ERROR
-  WINNER
-  BREAKPOINT
 
-  @@schema("public")
-}
 
 enum MatchStatus {
   ACTIVE
@@ -59,9 +33,19 @@ enum MatchStatus {
   @@schema("public")
 }
 
+model EventGroup {
+  id  Int @id @default(autoincrement())
+  description        String 
+
+  eventType EventType[]
+
+  @@schema("public")
+  @@map("event_groups")
+}
+
 model EventType {
   id  Int @id @default(autoincrement())
-  code        EventCode    @unique
+  code String @unique
   description String
   createdAt DateTime  @default(now())
   active    Boolean @default(true)
@@ -69,10 +53,13 @@ model EventType {
   buttonText  String?
   buttonOrder Int?
   buttonColour  String?
-  buttonGroup EventGroup?
+  eventGroupId Int?
+  pointWon Boolean @default(false)
+
 
   @@schema("public")
   @@map("event_types")
+  eventGroup         EventGroup?      @relation(fields: [eventGroupId], references: [id])
 }
 
 
