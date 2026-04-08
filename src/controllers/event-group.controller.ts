@@ -4,6 +4,7 @@ import * as eventGroupService from "../services/event-group.service";
 
 export const get = async (req: Request, res: Response) => {
   try {
+
     const response = await eventGroupService.GetAll();
     res.status(200).json(response);
   } catch (error) {

@@ -52,6 +52,11 @@ export async function GetSummary(matchId: number): Promise<MatchSummary[]> {
       id: true,
       description: true,
       eventGroupId: true,
+      eventGroup: {
+        select: {
+          description: true,
+        },
+      },
     },
   });
 
@@ -63,6 +68,7 @@ export async function GetSummary(matchId: number): Promise<MatchSummary[]> {
     return {
       event: eventType?.description ?? "",
       eventGroupId: eventType?.eventGroupId ?? null,
+      eventGroupDescription: eventType?.eventGroup?.description ?? "",
       count: g._count.eventTypeId
     };
   });
